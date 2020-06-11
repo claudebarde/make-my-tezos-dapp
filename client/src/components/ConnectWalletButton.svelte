@@ -3,6 +3,8 @@
   import { BeaconWallet } from "@taquito/beacon-wallet";
   import store from "../store";
 
+  export let loadingContract;
+
   const initTezBridgeWallet = async () => {
     try {
       // gets user's address
@@ -64,47 +66,59 @@
 </style>
 
 <section class="section">
-  {#if $store.userAddress && $store.userBalance}
-    <div class="tags has-addons account-info">
-      <span class="tag is-primary is-medium">
-        ꜩ {($store.userBalance.toNumber() / 1000000).toLocaleString()}
-      </span>
-      <span class="tag is-dark is-medium">
-        {$store.userAddress.slice(0, 10) + '...' + $store.userAddress.slice(-10)}
-      </span>
-      <span class="tag is-warning is-medium">{$store.network}</span>
-    </div>
-  {:else}
-    <div class="dropdown is-hoverable">
-      <div class="dropdown-trigger">
-        <button
-          class="button is-rounded is-link"
-          aria-haspopup="true"
-          aria-controls="dropdown-connect-wallet">
-          <span class="icon">
-            <i class="fas fa-wallet" />
-          </span>
-          <span>Connect your wallet</span>
-        </button>
+  {#if !loadingContract}
+    {#if $store.userAddress && $store.userBalance}
+      <div class="tags has-addons account-info">
+        <span class="tag is-primary is-medium">
+          ꜩ {($store.userBalance.toNumber() / 1000000).toLocaleString()}
+        </span>
+        <span class="tag is-dark is-medium">
+          {$store.userAddress.slice(0, 10) + '...' + $store.userAddress.slice(-10)}
+        </span>
+        <span class="tag is-warning is-medium">{$store.network}</span>
       </div>
-      <div class="dropdown-menu" id="dropdown-connect-wallet" role="menu">
-        <div class="dropdown-content">
-          <a
-            href="#/"
-            class="dropdown-item has-text-left"
-            on:click|preventDefault={initTezBridgeWallet}>
-            <img src="tezbridge-icon.png" alt="tezbridge" class="wallet-icon" />
-            <strong>TezBridge</strong>
-          </a>
-          <a
-            href="#/"
-            class="dropdown-item has-text-left"
-            on:click|preventDefault={initBeaconWallet}>
-            <img src="beacon-icon.png" alt="beacon" class="wallet-icon" />
-            <strong>Beacon</strong>
-          </a>
+    {:else}
+      <div class="dropdown is-hoverable">
+        <div class="dropdown-trigger">
+          <button
+            class="button is-rounded is-link"
+            aria-haspopup="true"
+            aria-controls="dropdown-connect-wallet">
+            <span class="icon">
+              <i class="fas fa-wallet" />
+            </span>
+            <span>Connect your wallet</span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-connect-wallet" role="menu">
+          <div class="dropdown-content">
+            <a
+              href="#/"
+              class="dropdown-item has-text-left"
+              on:click|preventDefault={initTezBridgeWallet}>
+              <img
+                src="tezbridge-icon.png"
+                alt="tezbridge"
+                class="wallet-icon" />
+              <strong>TezBridge</strong>
+            </a>
+            <a
+              href="#/"
+              class="dropdown-item has-text-left"
+              on:click|preventDefault={initBeaconWallet}>
+              <img src="beacon-icon.png" alt="beacon" class="wallet-icon" />
+              <strong>Beacon</strong>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+    {/if}
+  {:else}
+    <button class="button is-rounded is-info is-light">
+      <span class="icon">
+        <i class="fas fa-spinner fa-spin" />
+      </span>
+      <span>Contract is loading...</span>
+    </button>
   {/if}
 </section>
