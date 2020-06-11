@@ -32,6 +32,11 @@
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">BigMap</div>
         </div>
+      {:else if $store.contractStorage[element].__proto__.constructor.name === 'MichelsonMap'}
+        <div class="columns has-text-left is-vcentered storage-display">
+          <div class="column is-one-third has-text-weight-bold">{element}</div>
+          <div class="column is-two-thirds">Map</div>
+        </div>
       {:else}
         <!-- else content here -->
       {/if}

@@ -41,6 +41,8 @@
       validContractAddress = true;
       await loadContract(inputContractAddress);
       loadingContract = false;
+    } else {
+      console.error("Invalid contract address");
     }
   };
 
@@ -117,7 +119,6 @@
     ) {
       store.updateContractAddress(params.contract);
       store.updateNetwork(params.network);
-      Tezos.setProvider({ rpc: `https://${params.network}.SmartPy.io` });
       store.updateTezos(Tezos);
       validContractAddress = true;
       await loadContract(params.contract);
@@ -406,9 +407,6 @@
                     class="dropdown-item is-size-5 network-selection"
                     on:click|preventDefault={() => {
                       store.updateNetwork('mainnet');
-                      $store.Tezos.setProvider({
-                        rpc: 'https://mainnet.SmartPy.io'
-                      });
                       chooseNetwork = false;
                     }}>
                     <span class="icon network-icon">
@@ -421,9 +419,6 @@
                     class="dropdown-item is-size-5 network-selection"
                     on:click|preventDefault={() => {
                       store.updateNetwork('carthagenet');
-                      $store.Tezos.setProvider({
-                        rpc: 'https://carthagenet.SmartPy.io'
-                      });
                       chooseNetwork = false;
                     }}>
                     <span class="icon network-icon">
@@ -444,7 +439,15 @@
         <ul class="menu-list">
           <li
             on:click={() => {
-              network = 'mainnet';
+              store.updateNetwork('carthagenet');
+              inputContractAddress = 'KT1PCLg8Da8T5h5SWibMopPVsxiKg27tSRxx';
+              newContractAddress();
+            }}>
+            <a href="#/">Demo Contract</a>
+          </li>
+          <li
+            on:click={() => {
+              store.updateNetwork('mainnet');
               inputContractAddress = 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn';
               newContractAddress();
             }}>
@@ -452,7 +455,7 @@
           </li>
           <li
             on:click={() => {
-              network = 'mainnet';
+              store.updateNetwork('mainnet');
               inputContractAddress = 'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9';
               newContractAddress();
             }}>

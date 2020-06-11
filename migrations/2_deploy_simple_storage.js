@@ -1,5 +1,12 @@
-const SimpleStorage = artifacts.require("SimpleStorage");
+const { MichelsonMap } = require("@taquito/taquito");
 
-module.exports = deployer => {
-  deployer.deploy(SimpleStorage, 3);
+const DemoContract = artifacts.require("DemoContract");
+
+module.exports = (deployer) => {
+  deployer.deploy(DemoContract, {
+    integer: 0,
+    message: "hello world",
+    areyouthere: false,
+    names: new MichelsonMap(),
+  });
 };
