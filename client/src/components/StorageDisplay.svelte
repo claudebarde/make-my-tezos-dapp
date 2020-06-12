@@ -14,31 +14,41 @@
   {#each Object.keys($store.contractStorage) as element}
     {#if $store.contractStorage[element] && $store.contractStorage[element].__proto__}
       {#if $store.contractStorage[element].__proto__.constructor.name === 'String'}
-        <div class="columns has-text-left is-vcentered storage-display">
+        <div
+          class="columns has-text-left-desktop has-text-centered-touch
+          is-vcentered storage-display">
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">
             {$store.contractStorage[element]}
           </div>
         </div>
       {:else if $store.contractStorage[element].__proto__.constructor.name === 'BigNumber'}
-        <div class="columns has-text-left is-vcentered storage-display">
+        <div
+          class="columns has-text-left-desktop has-text-centered-touch
+          is-vcentered storage-display">
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">
             {$store.contractStorage[element].toNumber().toLocaleString('en-US')}
           </div>
         </div>
       {:else if $store.contractStorage[element].__proto__.constructor.name === 'BigMapAbstraction'}
-        <div class="columns has-text-left is-vcentered storage-display">
+        <div
+          class="columns has-text-left-desktop has-text-centered-touch
+          is-vcentered storage-display">
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">BigMap</div>
         </div>
       {:else if $store.contractStorage[element].__proto__.constructor.name === 'MichelsonMap'}
-        <div class="columns has-text-left is-vcentered storage-display">
+        <div
+          class="columns has-text-left-desktop has-text-centered-touch
+          is-vcentered storage-display">
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">Map</div>
         </div>
       {:else}
-        <div class="columns has-text-left is-vcentered storage-display">
+        <div
+          class="columns has-text-left-desktop has-text-centered-touch
+          is-vcentered storage-display">
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">
             {$store.contractStorage[element]}
@@ -46,7 +56,9 @@
         </div>
       {/if}
     {:else}
-      <div class="columns has-text-left is-vcentered storage-display">
+      <div
+        class="columns has-text-left-desktop has-text-centered-touch
+        is-vcentered storage-display">
         <div class="column is-one-third has-text-weight-bold">{element}</div>
         <div class="column is-two-thirds">
           {$store.contractStorage[element]}

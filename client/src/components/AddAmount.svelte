@@ -26,6 +26,17 @@
     width: 40%;
     margin: 0 auto;
   }
+
+  @media only screen and (max-width: 1023px) {
+    .accordion-header {
+      width: 70%;
+    }
+
+    .accordion-content {
+      padding: 20px;
+      width: 70%;
+    }
+  }
 </style>
 
 <div>

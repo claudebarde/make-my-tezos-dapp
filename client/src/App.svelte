@@ -119,8 +119,9 @@
       validateContractAddress(params.contract)
     ) {
       store.updateContractAddress(params.contract);
-      store.updateNetwork(params.network);
+      Tezos.setProvider({ rpc: `https://${params.network}.SmartPy.io` });
       store.updateTezos(Tezos);
+      store.updateNetwork(params.network);
       validContractAddress = true;
       await loadContract(params.contract);
       loadingContract = false;
@@ -133,7 +134,7 @@
 
 <style>
   main {
-    padding: 40px 0px 10px 0px;
+    padding: 10px 0px;
     font-family: "Montserrat", sans-serif;
     text-align: center;
     width: 100%;
@@ -191,6 +192,13 @@
     text-align: center;
     margin-top: 50px;
   }
+
+  @media only screen and (max-width: 1023px) {
+    .entrypoint {
+      padding: 30px 10px;
+      width: 100%;
+    }
+  }
 </style>
 
 <main>
@@ -206,7 +214,40 @@
   {#if validContractAddress}
     <section>
       <div class="container">
-        <div class="media smart-contract-title">
+        <div class="is-hidden-desktop">
+          <p class="title is-5">
+            {$store.contractAddress.slice(0, 10) + '...' + $store.contractAddress.slice(-10)}
+            <span
+              class="icon is-small copy-contract-link"
+              on:click={() => {
+                const aux = document.createElement('input');
+                aux.setAttribute('value', `http://localhost:8081/#/contract/${$store.network}/${$store.contractAddress}`);
+                document.body.appendChild(aux);
+                aux.select();
+                document.execCommand('copy');
+                document.body.removeChild(aux);
+              }}>
+              <i class="far fa-copy" />
+            </span>
+          </p>
+          <div class="columns is-mobile is-vcentered has-text-centered">
+            <div class="column is-one-third">
+              <img
+                src={`https://services.tzkt.io/v1/avatars/${$store.contractAddress}`}
+                alt="tzkitty"
+                class="image is-64x64"
+                style="margin:0 auto" />
+            </div>
+            <div class="column is-two-thirds">
+              <p class="title is-4">
+                {#if $store.contractInfo.alias}
+                  {$store.contractInfo.alias}
+                {:else}Smart contract{/if}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="media smart-contract-title is-hidden-touch">
           <div class="media-left">
             <img
               src={`https://services.tzkt.io/v1/avatars/${$store.contractAddress}`}
@@ -361,7 +402,7 @@
                 id="contract-address-input"
                 type="text"
                 class="input is-large is-rounded"
-                placeholder="Smart Contract Address"
+                placeholder="Address"
                 bind:value={inputContractAddress}
                 on:keyup={event => {
                   if (event.keyCode === 13 || event.key === 'Enter') {
@@ -401,7 +442,7 @@
                 class="dropdown-menu"
                 id="dropdown-network"
                 role="menu"
-                transition:fly={{ duration: 800, x: 400, easing: elasticOut }}>
+                transition:fly={window.innerWidth > 769 ? { duration: 800, x: 400, easing: elasticOut } : {}}>
                 <div class="dropdown-content has-text-left">
                   <a
                     href="#/"
@@ -467,7 +508,7 @@
     </section>
   {/if}
 </main>
-<footer class="is-size-7">
+<footer class="is-size-7 is-hidden-touch">
   🌮🌮 Claude Barde 2020 - Created with
   <a
     href="https://staging.api.tzkt.io/"
@@ -480,4 +521,19 @@
     Tzkitty API
   </a>
   🌮🌮
+</footer>
+<footer class="is-size-7 is-hidden-desktop">
+  🌮🌮 Claude Barde 2020 🌮🌮
+  <br />
+  Created with
+  <a
+    href="https://staging.api.tzkt.io/"
+    target="_blank"
+    rel="noreferrer noopener">
+    Baking Bad's TzKT API (v1.0)
+  </a>
+  and
+  <a href="https://tzkt.io" target="_blank" rel="noreferrer noopener">
+    Tzkitty API
+  </a>
 </footer>

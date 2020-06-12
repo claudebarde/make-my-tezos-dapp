@@ -46,9 +46,9 @@ const store = () => {
     },
     updateNetwork: (network) => {
       update((currentStore) => {
-        if (network === "mainnet") {
+        if (network === "mainnet" && currentStore.Tezos) {
           currentStore.Tezos.setProvider({ rpc: "https://mainnet.SmartPy.io" });
-        } else if (network === "carthagenet") {
+        } else if (network === "carthagenet" && currentStore.Tezos) {
           currentStore.Tezos.setProvider({
             rpc: "https://carthagenet.SmartPy.io",
           });

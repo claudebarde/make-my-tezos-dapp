@@ -46,6 +46,12 @@
     max-width: 80%;
     margin: 0 auto;
   }
+
+  @media only screen and (max-width: 1023px) {
+    .address-columns {
+      width: 100%;
+    }
+  }
 </style>
 
 <h1 class="title is-6 is-uppercase">{entrypointName}</h1>
