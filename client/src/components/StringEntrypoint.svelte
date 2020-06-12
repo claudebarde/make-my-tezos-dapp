@@ -1,6 +1,7 @@
 <script>
   import { slide } from "svelte/transition";
   import store from "../store";
+  import AddAmount from "./AddAmount.svelte";
 
   export let entrypointName, arg;
 
@@ -85,32 +86,4 @@
     </button>
   </div>
 </div>
-<div>
-  <p class="accordion-header" on:click={() => (accordionOpen = !accordionOpen)}>
-    {#if !amount || accordionOpen}
-      Add an amount
-    {:else if !!amount && !accordionOpen}
-      Added ꜩ {(amount / 1000000).toLocaleString('en-US')} for transaction
-    {/if}
-  </p>
-  {#if accordionOpen}
-    <div
-      class="columns is-mobile accordion-content"
-      transition:slide={{ duration: 500 }}>
-      <div class="column is-two-thirds">
-        <input
-          type="number"
-          class="input is-small is-rounded"
-          placeholder="Enter the value here"
-          bind:value={amount} />
-      </div>
-      <div class="column is-one-third">
-        <button
-          class="button is-small is-light is-info is-rounded"
-          on:click={() => (accordionOpen = false)}>
-          Add
-        </button>
-      </div>
-    </div>
-  {/if}
-</div>
+<AddAmount on:newAmount={event => (amount = event.detail)} {amount} />

@@ -24,6 +24,7 @@
     // initialize beacon wallet
     try {
       const wallet = new BeaconWallet({ name: "MakeMyDapp" });
+      console.log(wallet);
       const initNetwork = {
         type: $store.network
       };
