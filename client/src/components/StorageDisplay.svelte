@@ -22,7 +22,7 @@
             {$store.contractStorage[element]}
           </div>
         </div>
-      {:else if $store.contractStorage[element].__proto__.constructor.name === 'BigNumber'}
+      {:else if $store.contractStorage[element].__proto__.constructor.hasOwnProperty('isBigNumber')}
         <div
           class="columns has-text-left-desktop has-text-centered-touch
           is-vcentered storage-display">
@@ -31,19 +31,19 @@
             {$store.contractStorage[element].toNumber().toLocaleString('en-US')}
           </div>
         </div>
-      {:else if $store.contractStorage[element].__proto__.constructor.name === 'BigMapAbstraction'}
-        <div
-          class="columns has-text-left-desktop has-text-centered-touch
-          is-vcentered storage-display">
-          <div class="column is-one-third has-text-weight-bold">{element}</div>
-          <div class="column is-two-thirds">BigMap</div>
-        </div>
-      {:else if $store.contractStorage[element].__proto__.constructor.name === 'MichelsonMap'}
+      {:else if $store.contractStorage[element].__proto__.constructor.hasOwnProperty('isMichelsonMap')}
         <div
           class="columns has-text-left-desktop has-text-centered-touch
           is-vcentered storage-display">
           <div class="column is-one-third has-text-weight-bold">{element}</div>
           <div class="column is-two-thirds">Map</div>
+        </div>
+      {:else if $store.contractStorage[element].schema && $store.contractStorage[element].schema.hasOwnProperty('bigMap')}
+        <div
+          class="columns has-text-left-desktop has-text-centered-touch
+          is-vcentered storage-display">
+          <div class="column is-one-third has-text-weight-bold">{element}</div>
+          <div class="column is-two-thirds">BigMap</div>
         </div>
       {:else}
         <div

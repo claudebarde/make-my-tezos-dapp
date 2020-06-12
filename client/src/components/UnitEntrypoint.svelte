@@ -41,4 +41,6 @@
   on:click={sendTransaction}>
   Call entrypoint
 </button>
+<br />
+<br />
 <AddAmount on:newAmount={event => (amount = event.detail)} {amount} />
