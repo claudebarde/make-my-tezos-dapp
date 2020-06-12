@@ -193,13 +193,15 @@
 </style>
 
 <main>
-  <Title
-    on:reset={() => {
-      validContractAddress = false;
-      inputContractAddress = '';
-      entrypoints = [];
-      $store.Tezos.setProvider({ rpc: `https://mainnet.SmartPy.io` });
-    }} />
+  <section class="section">
+    <Title
+      on:reset={() => {
+        validContractAddress = false;
+        inputContractAddress = '';
+        entrypoints = [];
+        $store.Tezos.setProvider({ rpc: `https://mainnet.SmartPy.io` });
+      }} />
+  </section>
   {#if validContractAddress}
     <section>
       <div class="container">
