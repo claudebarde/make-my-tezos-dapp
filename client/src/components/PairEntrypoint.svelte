@@ -128,7 +128,19 @@
             </p>
           </div>
         {:else}
-          <!-- else content here -->
+          <div class="field">
+            <p class="control has-icons-left">
+              <input
+                type="text"
+                class="input is-rounded"
+                placeholder="Unavailable"
+                value={values[i] || ''}
+                disabled />
+              <span class="icon is-small is-left">
+                <i class="fas fa-times-circle" />
+              </span>
+            </p>
+          </div>
         {/if}
       {/each}
     </div>

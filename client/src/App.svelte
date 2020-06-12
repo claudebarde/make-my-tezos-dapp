@@ -51,10 +51,10 @@
     // loads contract instance
     let contractInstance = await Tezos.wallet.at(address);
     store.updateContractInstance(contractInstance);
-    //console.log(contractInstance);
+    console.log(contractInstance);
     // fetches the storage
     let contractStorage = await contractInstance.storage();
-    console.log(contractStorage);
+    //console.log(contractStorage);
     store.updateContractStorage(contractStorage);
     // parses contract methods
     const contractEntrypoints = await contractInstance.entrypoints.entrypoints;
@@ -94,7 +94,7 @@
         }
       })
       .sort((a, b) => (a.name > b.name ? 1 : -1));
-    //console.log(entrypoints);
+    console.log(entrypoints);
     // gets additional info about the smart contract
     const info = await fetch(
       $store.network === "mainnet"
