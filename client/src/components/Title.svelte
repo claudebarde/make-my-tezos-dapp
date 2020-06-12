@@ -58,5 +58,5 @@
   <Banner width="80%" height="80%" />
 </div>
 <div class="is-hidden-touch">
-  <Banner width="35%" height="35%" />
+  <Banner width="28%" height="28%" />
 </div>
