@@ -38,7 +38,12 @@
           <div class="column is-two-thirds">Map</div>
         </div>
       {:else}
-        <!-- else content here -->
+        <div class="columns has-text-left is-vcentered storage-display">
+          <div class="column is-one-third has-text-weight-bold">{element}</div>
+          <div class="column is-two-thirds">
+            {$store.contractStorage[element]}
+          </div>
+        </div>
       {/if}
     {:else}
       <div class="columns has-text-left is-vcentered storage-display">

@@ -19,6 +19,9 @@
         await op.confirmation();
         value = "";
         amount = "";
+        // updates storage
+        const storage = await $store.contractInstance.storage();
+        store.updateContractStorage(storage);
       } catch (err) {
         console.log(err);
       } finally {
@@ -72,7 +75,10 @@
   </div>
   <div class="column is-2">
     <button
-      class="button is-info is-rounded"
+      class="button is-rounded"
+      class:is-info={$store.userAddress}
+      class:is-warning={!$store.userAddress}
+      disabled={!$store.userAddress}
       class:is-loading={loading}
       on:click={sendTransaction}>
       Send

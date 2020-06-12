@@ -2,7 +2,7 @@
   import { slide } from "svelte/transition";
   import store from "../store";
 
-  export let entrypointName, arg;
+  export let entrypointName;
 
   let value = undefined;
   let amount = "";
@@ -10,7 +10,7 @@
   let accordionOpen = false;
 
   const sendTransaction = async () => {
-    if (value && $store.contractInstance && entrypointName) {
+    if (value !== undefined && $store.contractInstance && entrypointName) {
       loading = true;
       try {
         const op = await $store.contractInstance.methods[entrypointName](
@@ -19,6 +19,9 @@
         await op.confirmation();
         value = undefined;
         amount = "";
+        // updates storage
+        const storage = await $store.contractInstance.storage();
+        store.updateContractStorage(storage);
       } catch (err) {
         console.log(err);
       } finally {
@@ -61,6 +64,7 @@
         <input
           type="radio"
           name={entrypointName}
+          checked={value}
           on:change={() => (value = true)} />
         TRUE
       </label>
@@ -68,6 +72,7 @@
         <input
           type="radio"
           name={entrypointName}
+          checked={!value && value !== undefined}
           on:change={() => (value = false)} />
         FALSE
       </label>
@@ -75,7 +80,10 @@
   </div>
   <div class="column is-2">
     <button
-      class="button is-info is-rounded"
+      class="button is-rounded"
+      class:is-info={$store.userAddress}
+      class:is-warning={!$store.userAddress}
+      disabled={!$store.userAddress}
       class:is-loading={loading}
       on:click={sendTransaction}>
       Send

@@ -47,13 +47,14 @@
   };
 
   const loadContract = async address => {
+    window.scrollTo(0, 0);
     // loads contract instance
     let contractInstance = await Tezos.wallet.at(address);
     store.updateContractInstance(contractInstance);
     console.log(contractInstance);
     // fetches the storage
     let contractStorage = await contractInstance.storage();
-    console.log(contractStorage);
+    //console.log(contractStorage);
     store.updateContractStorage(contractStorage);
     // parses contract methods
     const contractEntrypoints = await contractInstance.entrypoints.entrypoints;
@@ -245,104 +246,106 @@
         <ConnectWalletButton {loadingContract} />
       </div>
     </section>
-    <section class="storage-section has-background-info-light">
-      <div class="container">
-        <h1 class="title is-4 is-italic">
-          <span class="network-icon">
-            <i class="fas fa-database" />
-          </span>
-          <span>Storage</span>
-        </h1>
-        <StorageDisplay />
-      </div>
-    </section>
-    <section>
-      <div class="container">
-        <h1 class="title is-4 is-italic">
-          <span class="network-icon">
-            <i class="fas fa-network-wired" />
-          </span>
-          <span>Entrypoints</span>
-        </h1>
-        {#each entrypoints as entrypoint, i}
-          {#if entrypoint.argument.val === 'unit'}
-            {#if i % 2 !== 0}
-              <div class="has-background-light entrypoint">
-                <UnitEntrypoint entrypointName={entrypoint.name} />
-              </div>
+    {#if !loadingContract}
+      <section class="storage-section has-background-info-light">
+        <div class="container">
+          <h1 class="title is-4 is-italic">
+            <span class="network-icon">
+              <i class="fas fa-database" />
+            </span>
+            <span>Storage</span>
+          </h1>
+          <StorageDisplay />
+        </div>
+      </section>
+      <section>
+        <div class="container">
+          <h1 class="title is-4 is-italic">
+            <span class="network-icon">
+              <i class="fas fa-network-wired" />
+            </span>
+            <span>Entrypoints</span>
+          </h1>
+          {#each entrypoints as entrypoint, i}
+            {#if entrypoint.argument.val === 'unit'}
+              {#if i % 2 !== 0}
+                <div class="has-background-light entrypoint">
+                  <UnitEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {:else}
+                <div class="entrypoint">
+                  <UnitEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {/if}
+            {:else if entrypoint.argument.val === 'address'}
+              {#if i % 2 !== 0}
+                <div class="has-background-light entrypoint">
+                  <AddressEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {:else}
+                <div class="entrypoint">
+                  <AddressEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {/if}
+            {:else if entrypoint.argument.val === 'nat' || entrypoint.argument.val === 'int' || entrypoint.argument.val === 'mutez'}
+              {#if i % 2 !== 0}
+                <div class="has-background-light entrypoint">
+                  <NumberEntrypoint
+                    entrypointName={entrypoint.name}
+                    arg={entrypoint.argument} />
+                </div>
+              {:else}
+                <div class="entrypoint">
+                  <NumberEntrypoint
+                    entrypointName={entrypoint.name}
+                    arg={entrypoint.argument} />
+                </div>
+              {/if}
+            {:else if entrypoint.argument.val === 'string'}
+              {#if i % 2 !== 0}
+                <div class="has-background-light entrypoint">
+                  <StringEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {:else}
+                <div class="entrypoint">
+                  <StringEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {/if}
+            {:else if entrypoint.argument.val === 'bool'}
+              {#if i % 2 !== 0}
+                <div class="has-background-light entrypoint">
+                  <BooleanEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {:else}
+                <div class="entrypoint">
+                  <BooleanEntrypoint entrypointName={entrypoint.name} />
+                </div>
+              {/if}
+            {:else if Array.isArray(entrypoint.argument)}
+              {#if i % 2 !== 0}
+                <div class="has-background-light entrypoint">
+                  <PairEntrypoint
+                    entrypointName={entrypoint.name}
+                    args={entrypoint.argument} />
+                </div>
+              {:else}
+                <div class="entrypoint">
+                  <PairEntrypoint
+                    entrypointName={entrypoint.name}
+                    args={entrypoint.argument} />
+                </div>
+              {/if}
             {:else}
-              <div class="entrypoint">
-                <UnitEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {/if}
-          {:else if entrypoint.argument.val === 'address'}
-            {#if i % 2 !== 0}
-              <div class="has-background-light entrypoint">
-                <AddressEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {:else}
-              <div class="entrypoint">
-                <AddressEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {/if}
-          {:else if entrypoint.argument.val === 'nat' || entrypoint.argument.val === 'int' || entrypoint.argument.val === 'mutez'}
-            {#if i % 2 !== 0}
-              <div class="has-background-light entrypoint">
-                <NumberEntrypoint
-                  entrypointName={entrypoint.name}
-                  arg={entrypoint.argument} />
-              </div>
-            {:else}
-              <div class="entrypoint">
-                <NumberEntrypoint
-                  entrypointName={entrypoint.name}
-                  arg={entrypoint.argument} />
-              </div>
-            {/if}
-          {:else if entrypoint.argument.val === 'string'}
-            {#if i % 2 !== 0}
-              <div class="has-background-light entrypoint">
-                <StringEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {:else}
-              <div class="entrypoint">
-                <StringEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {/if}
-          {:else if entrypoint.argument.val === 'bool'}
-            {#if i % 2 !== 0}
-              <div class="has-background-light entrypoint">
-                <BooleanEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {:else}
-              <div class="entrypoint">
-                <BooleanEntrypoint entrypointName={entrypoint.name} />
-              </div>
-            {/if}
-          {:else if Array.isArray(entrypoint.argument)}
-            {#if i % 2 !== 0}
-              <div class="has-background-light entrypoint">
-                <PairEntrypoint
-                  entrypointName={entrypoint.name}
-                  args={entrypoint.argument} />
-              </div>
-            {:else}
-              <div class="entrypoint">
-                <PairEntrypoint
-                  entrypointName={entrypoint.name}
-                  args={entrypoint.argument} />
-              </div>
+              <!-- else content here -->
             {/if}
           {:else}
-            <!-- else content here -->
-          {/if}
-        {:else}
-          <div class="message is-info">
-            <div class="message-body">No entrypoint found!</div>
-          </div>
-        {/each}
-      </div>
-    </section>
+            <div class="message is-info">
+              <div class="message-body">No entrypoint found!</div>
+            </div>
+          {/each}
+        </div>
+      </section>
+    {/if}
   {:else}
     <section class="landing-page">
       <div class="columns enter-contract-address">

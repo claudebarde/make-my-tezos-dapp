@@ -20,8 +20,11 @@
           ...values
         ).send(amount ? { amount, mutez: true } : {});
         await op.confirmation();
-        value = "";
+        values = [];
         amount = "";
+        // updates storage
+        const storage = await $store.contractInstance.storage();
+        store.updateContractStorage(storage);
       } catch (err) {
         console.log(err);
       } finally {
@@ -125,7 +128,7 @@
           <div class="field">
             <p class="control has-icons-left">
               <input
-                type="number"
+                type="text"
                 class="input is-rounded"
                 placeholder="Enter the value here"
                 value={values[i] || ''}
@@ -141,7 +144,15 @@
       {/each}
     </div>
     <div class="column is-2">
-      <button class="button is-info is-rounded">Send</button>
+      <button
+        class="button is-rounded"
+        class:is-info={$store.userAddress}
+        class:is-warning={!$store.userAddress}
+        disabled={!$store.userAddress}
+        class:is-loading={loading}
+        on:click={sendTransaction}>
+        Send
+      </button>
     </div>
   </div>
   <div>

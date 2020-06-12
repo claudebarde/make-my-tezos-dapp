@@ -70,7 +70,15 @@
     </div>
   </div>
   <div class="column is-2">
-    <button class="button is-info is-rounded">Send</button>
+    <button
+      class="button is-rounded"
+      class:is-info={$store.userAddress}
+      class:is-warning={!$store.userAddress}
+      disabled={!$store.userAddress}
+      class:is-loading={loading}
+      on:click={sendTransaction}>
+      Send
+    </button>
   </div>
 </div>
 <div>
