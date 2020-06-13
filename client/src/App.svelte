@@ -276,7 +276,7 @@
                   class="icon is-small copy-contract-link"
                   on:click={() => {
                     const aux = document.createElement('input');
-                    aux.setAttribute('value', `http://localhost:8081/#/contract/${$store.network}/${$store.contractAddress}`);
+                    aux.setAttribute('value', `${process.env.NODE_ENV === 'development' ? 'http://localhost:8081' : 'https://makemytezosdapp.netlify.app/'}/#/contract/${$store.network}/${$store.contractAddress}`);
                     document.body.appendChild(aux);
                     aux.select();
                     document.execCommand('copy');
