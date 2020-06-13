@@ -1,9 +1,14 @@
 <script>
+  import { fly } from "svelte/transition";
+  import { backInOut } from "svelte/easing";
   import { TezBridgeSigner } from "@taquito/tezbridge-signer";
   import { BeaconWallet } from "@taquito/beacon-wallet";
   import store from "../store";
 
   export let loadingContract;
+
+  let beaconRequestSent = false;
+  let beaconTxHash = undefined;
 
   const initTezBridgeWallet = async () => {
     try {
@@ -23,7 +28,32 @@
   const initBeaconWallet = async () => {
     // initialize beacon wallet
     try {
-      const wallet = new BeaconWallet({ name: "MakeMyDapp" });
+      const wallet = new BeaconWallet({
+        name: "MakeMyDapp",
+        iconUrl: "https://makemytezosdapp.netlify.app/favicon.png",
+        eventHandlers: {
+          PERMISSION_REQUEST_SUCCESS: {
+            handler: async data => {
+              console.log("permission data:", data);
+            }
+          },
+          OPERATION_REQUEST_SENT: {
+            handler: async data => {
+              console.log("operation sent data:", data);
+            }
+          },
+          OPERATION_REQUEST_SUCCESS: {
+            handler: async data => {
+              console.log("operation success data:", data);
+              store.updateTransactionHash(data.output.transactionHash);
+              // opens toast
+              store.updateProcessingTransaction("sent");
+              // closes toast after 4 sec
+              setTimeout(() => store.updateProcessingTransaction(null), 4000);
+            }
+          }
+        }
+      });
       console.log(wallet);
       const initNetwork = {
         type: $store.network

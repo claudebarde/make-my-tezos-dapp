@@ -20,11 +20,19 @@
         await op.confirmation();
         value = undefined;
         amount = "";
+        // opens toast
+        store.updateProcessingTransaction("success");
+        // closes toast after 4 sec
+        setTimeout(() => store.updateProcessingTransaction(null), 4000);
         // updates storage
         const storage = await $store.contractInstance.storage();
         store.updateContractStorage(storage);
       } catch (err) {
         console.log(err);
+        // opens toast
+        store.updateProcessingTransaction("error");
+        // closes toast after 4 sec
+        setTimeout(() => store.updateProcessingTransaction(null), 4000);
       } finally {
         loading = false;
       }

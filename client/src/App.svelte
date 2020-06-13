@@ -13,6 +13,7 @@
   import PairEntrypoint from "./components/PairEntrypoint.svelte";
   import BooleanEntrypoint from "./components/BooleanEntrypoint.svelte";
   import StorageDisplay from "./components/StorageDisplay.svelte";
+  import TxNotifications from "./components/TxNotifications.svelte";
   import store from "./store";
 
   export let params;
@@ -210,6 +211,7 @@
   }
 </style>
 
+<TxNotifications />
 <main>
   <section class="section">
     <Title

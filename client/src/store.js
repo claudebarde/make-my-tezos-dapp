@@ -10,6 +10,8 @@ const defaultState = {
   userBalance: undefined,
   Tezos: undefined,
   contractInfo: {},
+  processingTransaction: false,
+  transactionHash: undefined,
 };
 
 const store = () => {
@@ -64,6 +66,18 @@ const store = () => {
       update((currentStore) => ({
         ...currentStore,
         contractInfo: { ...info },
+      }));
+    },
+    updateProcessingTransaction: (status) => {
+      update((currentStore) => ({
+        ...currentStore,
+        processingTransaction: status,
+      }));
+    },
+    updateTransactionHash: (txHash) => {
+      update((currentStore) => ({
+        ...currentStore,
+        transactionHash: txHash,
       }));
     },
   };

@@ -20,11 +20,19 @@
         await op.confirmation();
         value = "";
         amount = "";
+        // opens toast
+        store.updateProcessingTransaction("success");
+        // closes toast after 4 sec
+        setTimeout(() => store.updateProcessingTransaction(null), 4000);
         // updates storage
         const storage = await $store.contractInstance.storage();
         store.updateContractStorage(storage);
       } catch (err) {
         console.log(err);
+        // opens toast
+        store.updateProcessingTransaction("error");
+        // closes toast after 4 sec
+        setTimeout(() => store.updateProcessingTransaction(null), 4000);
       } finally {
         loading = false;
       }
@@ -35,24 +43,6 @@
 <style>
   .address-columns {
     max-width: 80%;
-    margin: 0 auto;
-  }
-
-  .accordion-header {
-    background-color: #dbdbdb;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 50%;
-    margin: 0 auto;
-  }
-  .accordion-header:hover {
-    background-color: #b5b5b5;
-  }
-
-  .accordion-content {
-    padding: 10px;
-    width: 50%;
     margin: 0 auto;
   }
 </style>
