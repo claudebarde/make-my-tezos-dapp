@@ -22,6 +22,7 @@
   let network = "mainnet";
   let validContractAddress = false;
   let loadingContract = true;
+  let loadingError = false;
   let entrypoints = [];
   const approvedEntrypoints = [
     "nat",
@@ -48,14 +49,23 @@
 
   const loadContract = async address => {
     window.scrollTo(0, 0);
-    // loads contract instance
-    let contractInstance = await Tezos.wallet.at(address);
-    store.updateContractInstance(contractInstance);
-    console.log(contractInstance);
-    // fetches the storage
-    let contractStorage = await contractInstance.storage();
-    //console.log(contractStorage);
-    store.updateContractStorage(contractStorage);
+    let contractInstance, contractStorage;
+    loadingError = false;
+    try {
+      // loads contract instance
+      contractInstance = await Tezos.wallet.at(address);
+      store.updateContractInstance(contractInstance);
+      console.log(contractInstance);
+      // fetches the storage
+      contractStorage = await contractInstance.storage();
+      //console.log(contractStorage);
+      store.updateContractStorage(contractStorage);
+    } catch (err) {
+      console.log(err);
+      loadingContract = false;
+      loadingError = true;
+      return;
+    }
     // parses contract methods
     const contractEntrypoints = await contractInstance.entrypoints.entrypoints;
     // gets contract method names
@@ -111,7 +121,6 @@
   };
 
   onMount(async () => {
-    // contract example KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn
     if (
       params.network &&
       ["mainnet", "carthagenet"].includes(params.network) &&
@@ -221,7 +230,7 @@
               class="icon is-small copy-contract-link"
               on:click={() => {
                 const aux = document.createElement('input');
-                aux.setAttribute('value', `http://localhost:8081/#/contract/${$store.network}/${$store.contractAddress}`);
+                aux.setAttribute('value', `${process.env.NODE_ENV === 'development' ? 'http://localhost:8081' : 'https://makemytezosdapp.netlify.app/'}/#/contract/${$store.network}/${$store.contractAddress}`);
                 document.body.appendChild(aux);
                 aux.select();
                 document.execCommand('copy');
@@ -287,7 +296,7 @@
         <ConnectWalletButton {loadingContract} />
       </div>
     </section>
-    {#if !loadingContract}
+    {#if !loadingContract && !loadingError}
       <section class="storage-section has-background-info-light">
         <div class="container">
           <h1 class="title is-4 is-italic">
@@ -386,6 +395,14 @@
           {/each}
         </div>
       </section>
+    {:else if loadingError}
+      <div class="message is-danger">
+        <div class="message-body">
+          There was an error while loading this contract.
+          <br />
+          Please check if the network name is correct and try again.
+        </div>
+      </div>
     {/if}
   {:else}
     <section class="landing-page">
