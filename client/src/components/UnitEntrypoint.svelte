@@ -16,6 +16,12 @@
         const op = await $store.contractInstance.methods[entrypointName]([
           ["unit"]
         ]).send(amount ? { amount, mutez: true } : {});
+        store.updateTransactionHash(op.opHash);
+        // opens toast
+        store.updateProcessingTransaction("sent");
+        // closes toast after 4 sec
+        setTimeout(() => store.updateProcessingTransaction(null), 4000);
+        // waits for confirmation
         await op.confirmation();
         value = "";
         amount = "";

@@ -46,11 +46,6 @@
           OPERATION_REQUEST_SUCCESS: {
             handler: async data => {
               console.log("operation success data:", data);
-              store.updateTransactionHash(data.output.transactionHash);
-              // opens toast
-              store.updateProcessingTransaction("sent");
-              // closes toast after 4 sec
-              setTimeout(() => store.updateProcessingTransaction(null), 4000);
             }
           }
         }

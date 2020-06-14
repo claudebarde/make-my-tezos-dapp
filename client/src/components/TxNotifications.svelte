@@ -16,7 +16,7 @@
 {#if $store.processingTransaction === 'sent'}
   <div
     class="notification is-info toast-processing-tx"
-    transition:fly={{ delay: 2000, duration: 1000, x: 200, easing: backInOut }}>
+    transition:fly={{ delay: 1000, duration: 1000, x: 200, easing: backInOut }}>
     <button
       class="delete"
       on:click={() => store.updateProcessingTransaction(null)} />
@@ -30,7 +30,7 @@
         <p>Processing transaction...</p>
         <p>
           <a
-            href={`https://you.better-call.dev/${$store.network}/opg/${$store.transactionHash}/contents`}
+            href={`https://better-call.dev/${$store.network}/opg/${$store.transactionHash}/contents`}
             target="_blank"
             rel="noopener noreferrer">
             Display transaction
@@ -60,7 +60,7 @@
         <p>Transaction successful!</p>
         <p>
           <a
-            href={`https://you.better-call.dev/${$store.network}/opg/${$store.transactionHash}/contents`}
+            href={`https://better-call.dev/${$store.network}/opg/${$store.transactionHash}/contents`}
             target="_blank"
             rel="noopener noreferrer">
             Display hash
@@ -90,7 +90,7 @@
         <p>An error has occurred!</p>
         <p>
           <a
-            href={`https://you.better-call.dev/${$store.network}/opg/${$store.transactionHash}/contents`}
+            href={`https://better-call.dev/${$store.network}/opg/${$store.transactionHash}/contents`}
             target="_blank"
             rel="noopener noreferrer">
             Display hash
