@@ -3,6 +3,7 @@
   import { backInOut } from "svelte/easing";
   import { TezBridgeSigner } from "@taquito/tezbridge-signer";
   import { BeaconWallet } from "@taquito/beacon-wallet";
+  import { ThanosWallet } from "@thanos-wallet/dapp";
   import store from "../store";
 
   export let loadingContract;
@@ -77,6 +78,29 @@
       console.log(err);
     }
   };
+
+  const initThanosWallet = async () => {
+    try {
+      const available = await ThanosWallet.isAvailable();
+      if (!available) {
+        throw new Error("Thanos Wallet not installed");
+      }
+      const wallet = new ThanosWallet("Make My Dapp!");
+      await wallet.connect($store.network);
+      $store.Tezos.setWalletProvider(wallet);
+      // saves address
+      store.updateUserAddress(wallet.pkh);
+      // saves balance
+      const balance = await $store.Tezos.tz.getBalance(wallet.pkh);
+      store.updateUserBalance(balance);
+    } catch (error) {
+      console.log(error);
+      // opens toast
+      store.updateProcessingTransaction("error");
+      // closes toast after 4 sec
+      setTimeout(() => store.updateProcessingTransaction(null), 4000);
+    }
+  };
 </script>
 
 <style>
@@ -139,6 +163,13 @@
               on:click|preventDefault={initBeaconWallet}>
               <img src="beacon-icon.png" alt="beacon" class="wallet-icon" />
               <strong>Beacon</strong>
+            </a>
+            <a
+              href="#/"
+              class="dropdown-item has-text-left"
+              on:click|preventDefault={initThanosWallet}>
+              <img src="thanos-icon.png" alt="thanos" class="wallet-icon" />
+              <strong>Thanos</strong>
             </a>
           </div>
         </div>
